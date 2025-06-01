@@ -54,8 +54,6 @@ CLIENT_SECRET = Your_Artsy_Client_Secret
 ```
  - Obtain these credentials from [Artsy’s Client Applications page](https://developers.artsy.net/client_applications).
 
-3. In Xcode, select the **ArtiBol-Debug** scheme.
-
 ## **▶️ Building and Running**
 
 1. Open the generated ArtiBol.xcodeproj in Xcode.
