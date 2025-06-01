@@ -9,6 +9,15 @@
     }
   ],
   "defaultOptions" : {
+    "codeCoverage" : {
+      "targets" : [
+        {
+          "containerPath" : "container:ArtiBol.xcodeproj",
+          "identifier" : "5FDB99E812E20DE1F50348DF",
+          "name" : "ArtiBol"
+        }
+      ]
+    },
     "commandLineArgumentEntries" : [
       {
         "argument" : "isRunningTests"
