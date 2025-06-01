@@ -69,7 +69,7 @@ ArtiBol includes three types of automated tests:
 
 1. **Unit Tests**
 2. **Snapshot Tests**
-    - **Important:** Snapshot tests are recorded on an **iPhone SE (3rd generation)** simulator. Running on a different device or simulator may cause mismatches. If a snapshot test fails due to a device change, re-record it.
+    - **Important:** Snapshot tests are recorded on an **iPhone 16e** simulator. Running on a different device or simulator may cause mismatches. If a snapshot test fails due to a device change, re-record it.
 3. **Feature Tests**
 
 ### ** Running All Tests**
@@ -81,7 +81,7 @@ In Xcode:
 3. All three test targets (Unit, Snapshot, Feature) will run in sequence.
 
 ## **📠 System Information**
-- Built and tested in Xcode 16.1 (behavior may vary on other versions
+- Built and tested in Xcode 16.4 (behavior may vary on other versions
 - Running on macOS 15.4.1
 
 ## **❗ Known Issues**
