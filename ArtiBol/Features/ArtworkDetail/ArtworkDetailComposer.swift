@@ -15,7 +15,7 @@ struct ArtworkDetailComposer {
         artworkId: String,
         client: HTTPClient,
         imageLoadClient: HTTPClient = URLSession.shared,
-        imageCache: URLCache = .shared,
+        imageCache: URLCache = .imageCache,
         baseURL: URL
     ) -> ArtworkDetailView<ArtworkDetailViewModelImp<ArtworkImageViewModelImpl>> {
         let remoteArtworkDetailLoader = RemoteArtworkDetailLoader(client: client, baseURL: baseURL)

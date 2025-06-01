@@ -18,7 +18,7 @@ struct ArtworkCatalogComposer {
             tokenProvider: TokenProvider.shared
         ),
         imageLoadClient: HTTPClient = URLSession.shared,
-        imageCache: URLCache = .shared,
+        imageCache: URLCache = .imageCache,
         baseURL: URL = AppConfig.URLS.baseAPIURL
     ) -> ArtworkCatalogView<ArtworkCatalogViewModelImpl> {
         let remoteLoader = RemoteArtworksLoader(client: artworksClient, baseURL: baseURL)

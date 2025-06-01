@@ -17,7 +17,7 @@ struct ArtworkSearchComposer {
             tokenProvider: TokenProvider.shared
         ),
         imageClient: HTTPClient = URLSession.shared,
-        imageCache: URLCache = .shared,
+        imageCache: URLCache = .imageCache,
         baseURL: URL = AppConfig.URLS.baseAPIURL
     ) -> ArtworkSearchView<ArtworkSearchViewModelImpl<ArtworkImageViewModelImpl>> {
         let viewModel = ArtworkSearchViewModelImpl<ArtworkImageViewModelImpl>(
