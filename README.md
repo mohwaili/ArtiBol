@@ -83,8 +83,8 @@ In Xcode:
 3. All three test targets (Unit, Snapshot, Feature) will run in sequence.
 
 ## **📠 System Information**
-•	Built and tested in Xcode 16.1 (behavior may vary on other versions
-•	Running on macOS 15.4.1
+- Built and tested in Xcode 16.1 (behavior may vary on other versions
+- Running on macOS 15.4.1
 
 ## **❗ Known Issues**
 
