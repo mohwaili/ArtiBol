@@ -198,6 +198,26 @@ class ArtworkCatalogFeatureTests {
         #expect(cardViewModel.id == artwork.id)
         #expect(cardViewModel.artwork == artwork)
     }
+    
+    @Test
+    func navigateToDetail() {
+        var destinations: [NavigationDestination] = []
+        let destinationsBinding = Binding<[NavigationDestination]>(
+            get: { destinations },
+            set: { destinations = $0 }
+        )
+        let sut = makeSUT(
+            destinations: destinationsBinding,
+            client: URLSession(configuration: .ephemeral),
+            baseURL: baseURL
+        )
+        
+        #expect(destinations.isEmpty)
+        
+        sut.navigateToArtworkDetail(id: "1")
+        
+        #expect(destinations.contains(.artworkDetail(id: "1")))
+    }
 }
 
 private extension ArtworkCatalogFeatureTests {
