@@ -41,9 +41,6 @@ actor LoadImageUseCase: Sendable {
         let task = Task<Data, Error> {
             let (data, response) = try await client.data(with: request)
             try Task.checkCancellation()
-            guard 200..<300 ~= response.statusCode else {
-                throw URLError(.badServerResponse)
-            }
             cache.storeCachedResponse(
                 CachedURLResponse(response: response, data: data),
                 for: request
