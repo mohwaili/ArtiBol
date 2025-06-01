@@ -29,7 +29,7 @@ extension AppConfig {
         static var baseAPIURL: URL {
             guard let urlString = config["BASE_API_URL"] as? String,
                   let url = URL(string: "https://\(urlString)") else {
-                fatalError("⚠️ BASE_API_URL missing or malformed in Info.plist")
+                fatalError("⚠️ BASE_API_URL missing or malformed in the xcconfig file")
             }
             return url
         }
@@ -43,15 +43,15 @@ extension AppConfig {
     enum Keys {
         
         static var clientID: String {
-            guard let id = config["CLIENT_ID"] as? String else {
-                fatalError("⚠️ CLIENT_ID missing in Info.plist")
+            guard let id = config["CLIENT_ID"] as? String, !id.isEmpty else {
+                fatalError("⚠️ CLIENT_ID missing in xcconfig file")
             }
             return id
         }
         
         static var clientSecret: String {
-            guard let secret = config["CLIENT_SECRET"] as? String else {
-                fatalError("⚠️ CLIENT_SECRET missing in Info.plist")
+            guard let secret = config["CLIENT_SECRET"] as? String, !secret.isEmpty else {
+                fatalError("⚠️ CLIENT_SECRET missing in xcconfig file")
             }
             return secret
         }
