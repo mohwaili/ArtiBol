@@ -47,14 +47,15 @@ private extension ArtworkSearchView {
     var initialView: some View {
         makeMessageView(
             systemImageName: "magnifyingglass.circle.fill",
-            message: "Search for your favourite artwork"
+            message: String(localized: "search_initial_state_message")
         )
     }
     
     var emptyView: some View {
+        
         makeMessageView(
             systemImageName: "exclamationmark.magnifyingglass",
-            message: "No results found for \(viewModel.query)! Try something else."
+            message: String(format: String(localized: "search_no_results_state_message"), viewModel.query)
         )
     }
     

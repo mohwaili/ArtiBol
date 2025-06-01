@@ -2,7 +2,7 @@
   "sourceLanguage" : "en",
   "strings" : {
     "art_catalog_empty_message" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -13,7 +13,7 @@
       }
     },
     "common_loading" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -24,7 +24,7 @@
       }
     },
     "common_try_again" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -59,8 +59,30 @@
         }
       }
     },
+    "search_initial_state_message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search for your favourite artwork"
+          }
+        }
+      }
+    },
+    "search_no_results_state_message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No results found for %@! Try something else."
+          }
+        }
+      }
+    },
     "tab_item_art" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -71,7 +93,7 @@
       }
     },
     "tab_item_search" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
