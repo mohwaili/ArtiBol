@@ -1,0 +1,76 @@
+{
+   "total_count":null,
+   "_links":{
+      "self":{
+         "href":"https://api.artsy.net/api/artworks?offset=0&size=3"
+      },
+      "next":{
+         "href":"https://api.artsy.net/api/artworks?cursor=4d8b93394eb68a1b2c0010fa%3A4d8b93394eb68a1b2c0010fa&size=3"
+      }
+   },
+   "_embedded":{
+      "artworks":[
+         {
+            "id":"4d8b92eb4eb68a1b2c000968",
+            "title":"Der Kuss (The Kiss)",
+            "category":"Painting",
+            "medium":"Oil and gold leaf on canvas",
+            "date":"1907-1908",
+            "dimensions":{
+               "cm":{
+                  "text":"180.1 × 180.1 cm",
+                  "height":180.1,
+                  "width":180.1,
+               }
+            },
+            "_links":{
+               "image":{
+                  "href":"https://d32dm0rphc51dk.cloudfront.net/NOpIAwQa-3r51Cg9qXKbfA/{image_version}.jpg",
+                  "templated":true
+               }
+            }
+         },
+         {
+            "id":"4d8b92ee4eb68a1b2c0009ab",
+            "slug":"francisco-de-goya-the-third-of-may",
+            "title":"The Third of May",
+            "category":"Painting",
+            "medium":"Oil on canvas",
+            "date":"1814",
+            "dimensions":{
+               "cm":{
+                  "text":"266.2 × 345.2 cm",
+                  "height":266.2,
+                  "width":345.2
+               }
+            },
+            "_links":{
+               "image":{
+                  "href":"https://d32dm0rphc51dk.cloudfront.net/m4X41Fun8gpDjn7Gat9cUg/{image_version}.jpg",
+                  "templated":true
+               }
+            }
+         },
+         {
+            "id":"4d8b93394eb68a1b2c0010fa",
+            "title":"The Company of Frans Banning Cocq and Willem van Ruytenburch (The Night Watch)",
+            "category":"Painting",
+            "medium":"Oil on canvas",
+            "date":"1642",
+            "dimensions":{
+               "cm":{
+                  "text":"363.2 × 437.4 cm",
+                  "height":363.2,
+                  "width":437.4,
+               }
+            },
+            "_links":{
+               "image":{
+                  "href":"https://d32dm0rphc51dk.cloudfront.net/IG8ZLvVmZgQiTn2zK0Bp8w/{image_version}.jpg",
+                  "templated":true
+               }
+            }
+         }
+      ]
+   }
+}

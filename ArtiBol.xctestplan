@@ -1,0 +1,51 @@
+{
+  "configurations" : [
+    {
+      "id" : "0B459F34-0051-40CA-86CE-A9A9195BFD0D",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "commandLineArgumentEntries" : [
+      {
+        "argument" : "isRunningTests"
+      }
+    ],
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:ArtiBol.xcodeproj",
+      "identifier" : "BD823D4E2DE881EB00C534FE",
+      "name" : "ArtiBol"
+    },
+    "testExecutionOrdering" : "random"
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : false,
+      "target" : {
+        "containerPath" : "container:ArtiBol.xcodeproj",
+        "identifier" : "515E3598546F5FA6A5453887",
+        "name" : "ArtiBolFeatureTests"
+      }
+    },
+    {
+      "parallelizable" : false,
+      "target" : {
+        "containerPath" : "container:ArtiBol.xcodeproj",
+        "identifier" : "DE11167E75DA4295B012D293",
+        "name" : "ArtiBolSnapshotTests"
+      }
+    },
+    {
+      "parallelizable" : false,
+      "target" : {
+        "containerPath" : "container:ArtiBol.xcodeproj",
+        "identifier" : "9BE78D59457CB640B34349AD",
+        "name" : "ArtiBolTests"
+      }
+    }
+  ],
+  "version" : 1
+}

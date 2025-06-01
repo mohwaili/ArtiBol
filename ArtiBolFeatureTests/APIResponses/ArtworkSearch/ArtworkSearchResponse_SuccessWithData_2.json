@@ -1,0 +1,68 @@
+{
+  "total_count": 266,
+  "offset": 0,
+  "q": "Vincent van Gogh",
+  "_links": {
+    "self": {
+      "href": "https://api.artsy.net/api/search?offset=0&q=Vincent+van+Gogh&size=3"
+    },
+    "next": {
+      "href": "https://api.artsy.net/api/search?offset=3&q=Vincent+van+Gogh&size=3"
+    }
+  },
+  "_embedded": {
+    "results": [
+      {
+        "type": "artwork",
+        "title": "Vincent van Gogh, Sunflowers Skateboard Decks after Vincent Van Gogh (2019)",
+        "description": "7-ply Canadian Maplewood with screen-print, 78.7 × 61 cm",
+        "og_type": "artwork",
+        "_links": {
+          "self": {
+            "href": "https://api.artsy.net/api/artworks/65aecd16fbc303000b9569f5"
+          },
+          "permalink": {
+            "href": "https://www.artsy.net/artwork/vincent-van-gogh-sunflowers-skateboard-decks-after-vincent-van-gogh-1"
+          },
+          "thumbnail": {
+            "href": "https://d32dm0rphc51dk.cloudfront.net/zgT7Utd1M2gF0C_IIEflAQ/square.jpg"
+          }
+        }
+      },
+      {
+        "type": "artwork",
+        "title": "Vincent van Gogh, Skull Skateboard Deck after Vincent Van Gogh (2019)",
+        "description": "7-ply Canadian Maplewood with screen-print, 31 × 8 × 2 in",
+        "og_type": "artwork",
+        "_links": {
+          "self": {
+            "href": "https://api.artsy.net/api/artworks/5eb449d18e3bd900124bf6b0"
+          },
+          "permalink": {
+            "href": "https://www.artsy.net/artwork/vincent-van-gogh-skull-skateboard-deck-after-vincent-van-gogh"
+          },
+          "thumbnail": {
+            "href": "https://d32dm0rphc51dk.cloudfront.net/8rdAyXluL5KRvqPJld2lkg/square.jpg"
+          }
+        }
+      },
+      {
+        "type": "artwork",
+        "title": "Vincent van Gogh, Sunflowers Skateboard Decks after Vincent Van Gogh (2019)",
+        "description": "7-ply Canadian Maplewood with screen-print, 31 × 24 × 2 in",
+        "og_type": "artwork",
+        "_links": {
+          "self": {
+            "href": "https://api.artsy.net/api/artworks/5eb449d8e02559000ffd15fa"
+          },
+          "permalink": {
+            "href": "https://www.artsy.net/artwork/vincent-van-gogh-sunflowers-skateboard-decks-after-vincent-van-gogh"
+          },
+          "thumbnail": {
+            "href": "https://d32dm0rphc51dk.cloudfront.net/CYvtfkIQabVFymHbVTQEUA/square.jpg"
+          }
+        }
+      }
+    ]
+  }
+}

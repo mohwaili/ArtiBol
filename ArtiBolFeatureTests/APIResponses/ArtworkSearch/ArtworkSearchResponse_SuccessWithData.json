@@ -1,0 +1,51 @@
+{
+  "total_count": 466,
+  "offset": 0,
+  "q": "Mona Lisa",
+  "_links": {
+    "self": {
+      "href": "https://api.artsy.net/api/search?offset=0&q=Mona+Lisa&size=2"
+    },
+    "next": {
+      "href": "https://api.artsy.net/api/search?offset=2&q=Mona+Lisa&size=2"
+    }
+  },
+  "_embedded": {
+    "results": [
+      {
+        "type": "artwork",
+        "title": "Peter Max, Mona Lisa (MONA LISA)",
+        "description": "Acrylic on Paper, 12 × 14 in",
+        "og_type": "artwork",
+        "_links": {
+          "self": {
+            "href": "https://api.artsy.net/api/artworks/61573d0ff8c02e000cb7d3dc"
+          },
+          "permalink": {
+            "href": "https://www.artsy.net/artwork/peter-max-mona-lisa-4"
+          },
+          "thumbnail": {
+            "href": "https://d32dm0rphc51dk.cloudfront.net/tRFr3JHKHNvUVuVGF9u5Vw/square.jpg"
+          }
+        }
+      },
+      {
+        "type": "artwork",
+        "title": "MADSAKI, Mona Lisa (2019)",
+        "description": "Offset lithograph in colors on satin wove paper, 31 1/2 × 21 1/2 in",
+        "og_type": "artwork",
+        "_links": {
+          "self": {
+            "href": "https://api.artsy.net/api/artworks/5ec2f428ebc65e001206b742"
+          },
+          "permalink": {
+            "href": "https://www.artsy.net/artwork/madsaki-mona-lisa"
+          },
+          "thumbnail": {
+            "href": "https://d32dm0rphc51dk.cloudfront.net/8Sdpa88dI2fOXzpHikcatQ/square.jpg"
+          }
+        }
+      }
+    ]
+  }
+}

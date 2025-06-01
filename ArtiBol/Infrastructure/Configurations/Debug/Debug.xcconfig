@@ -1,0 +1,19 @@
+//
+//  Staging.xcconfig
+//  ArtiBol
+//
+//  Created by Mohammed Al Waili on 29/05/2025.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+PRODUCT_BUNDLE_IDENTIFIER = com.swiftymo.ArtiBol-Debug
+
+BUNDLE_DISPLAY_NAME = ArtiBol (debug)
+
+BASE_API_URL = api.artsy.net/api
+
+CLIENT_ID = 
+// unsafe: for testing purposes only
+CLIENT_SECRET = 

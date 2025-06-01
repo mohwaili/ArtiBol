@@ -1,0 +1,20 @@
+{
+  "id": "4d8b92eb4eb68a1b2c000968",
+  "title": "Der Kuss (The Kiss)",
+  "category": "Painting",
+  "medium": "Oil and gold leaf on canvas",
+  "date": "1907-1908",
+  "dimensions": {
+    "cm": {
+      "text": "180.1 × 180.1 cm",
+      "height": 180.1,
+      "width": 180.1,
+    }
+  },
+  "_links": {
+    "image": {
+      "href": "https://d32dm0rphc51dk.cloudfront.net/NOpIAwQa-3r51Cg9qXKbfA/{image_version}.jpg",
+      "templated": true
+    }
+  }
+}

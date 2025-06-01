@@ -1,0 +1,176 @@
+settings:
+  base:
+    ENABLE_USER_SCRIPT_SANDBOXING: NO
+    ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS: YES
+    CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED: YES
+    SWIFT_VERSION: 6.0
+    CURRENT_PROJECT_VERSION: 1 
+    MARKETING_VERSION: 0.0.1
+targetTemplates:
+  BaseTarget:
+    platform: iOS
+  AppTarget:
+    templates: [BaseTarget]
+    type: application
+    info:
+      path: ArtiBol/Core/Resources/Info.plist
+      properties:
+        CFBundleName: $(PRODUCT_NAME)
+        CFBundleIdentifier: $(PRODUCT_BUNDLE_IDENTIFIER)
+        CFBundleInfoDictionaryVersion: 6.0
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        CFBundleExecutable: $(EXECUTABLE_NAME)
+        LSRequiresIPhoneOS: true
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: YES
+          UISceneConfigurations:
+        UISupportedInterfaceOrientations~iphone:
+          [UIInterfaceOrientationPortrait]
+        CFBundlePackageType: $(PRODUCT_BUNDLE_PACKAGE_TYPE)
+        BUILD_CONFIG:
+          BASE_API_URL: $(BASE_API_URL)
+          CLIENT_ID: $(CLIENT_ID)
+          CLIENT_SECRET: $(CLIENT_SECRET)
+        UILaunchScreen:
+          UILaunchScreenName:
+        CFBundleDevelopmentRegion: $(DEVELOPMENT_LANGUAGE)
+        UIApplicationSupportsIndirectInputEvents: YES
+        CFBundleDisplayName: $(BUNDLE_DISPLAY_NAME)
+    scheme:
+      gatherCoverageData: true
+      testTargets:
+        - name: ArtiBolTests
+          parallelizable: false
+        - name: ArtiBolSnapshotTests
+          parallelizable: false
+        - name: ArtiBolFeatureTests
+          parallelizable: false
+  TestTarget:
+    templates: [BaseTarget]
+    type: bundle.unit-test
+    sources:
+      - path: ArtiBol
+        includes:
+          - "**/*Tests.swift"
+        excludes:
+          - "**/Snapshots/**"
+          - "**/*SnapshotTests.swift"
+          - "**/Tests/Feature/**"
+          - "**/*FeatureTests.swift"
+      - path: ArtiBolTests
+    dependencies:
+      - target: ArtiBol
+    scheme:
+      gatherCoverageData: true
+      commandLineArguments:
+        "isRunningTests": true
+      settings:
+        TEST_HOST: "${BUILT_PRODUCTS_DIR}/ArtiBol.app/ArtiBol"
+  SnapshotTestTarget:
+    templates: [BaseTarget]
+    type: bundle.unit-test
+    sources:
+      - path: ArtiBol
+        includes:
+          - "**/*SnapshotTests.swift"
+      - path: ArtiBolSnapshotTests
+    dependencies:
+      - package: SnapshotTesting
+      - target: ArtiBol
+    scheme:
+      gatherCoverageData: true
+      commandLineArguments:
+        "isRunningTests": true
+      settings:
+        TEST_HOST: "${BUILT_PRODUCTS_DIR}/ArtiBol.app/ArtiBol"
+  FeatureTestTarget:
+    templates: [BaseTarget]
+    type: bundle.unit-test
+    sources:
+      - path: ArtiBol
+        includes:
+          - "**/*FeatureTests.swift"
+        excludes:
+          - "**/Snapshots/**"
+          - "**/*SnapshotTests.swift"
+      - path: ArtiBolTests
+        includes:
+          - "**/URLProtocolStub.swift"
+      - path: ArtiBolFeatureTests
+    dependencies:
+      - target: ArtiBol
+    scheme:
+      gatherCoverageData: true
+      commandLineArguments:
+        "isRunningTests": true
+      settings:
+        TEST_HOST: "${BUILT_PRODUCTS_DIR}/ArtiBol.app/ArtiBol"
+packages:
+  SnapshotTesting:
+    url: https://github.com/pointfreeco/swift-snapshot-testing.git
+    majorVersion: 1.18.4
+name: ArtiBol
+options:
+  bundlePrefix: com.swiftymo
+  minimumXcodeGenVersion: 2.42
+  createIntermediateGroups: true
+  deploymentTarget:
+    iOS: 16.1
+  groupOrdering:
+    - order: ["Core", "Infrastructure", "Features"]
+targets:
+  ArtiBol:
+    templates: [AppTarget]
+    configFiles:
+      Debug: ArtiBol/Infrastructure/Configurations/Debug/Debug.xcconfig
+      Release: ArtiBol/Infrastructure/Configurations/Production/Production.xcconfig
+    sources:
+      - path: ArtiBol
+        excludes:
+          - "**/__Snapshots__/**"
+          - "**/Tests/**"
+  ArtiBolTests:
+    templates: [TestTarget]
+  ArtiBolSnapshotTests:
+    templates: [SnapshotTestTarget]
+  ArtiBolFeatureTests:
+    templates: [FeatureTestTarget]
+schemes:
+  ArtiBol-Release:
+    build:
+      targets:
+        ArtiBol: all
+    run:
+      config: Release
+    test:
+      config: Release
+    profile:
+      config: Release
+      targets:
+        - ArtiBol
+    archive:
+      config: Release
+      targets:
+        - ArtiBol
+  ArtiBol-Debug:
+    build:
+      targets:
+        ArtiBol: all
+        ArtiBolTests: [test]
+        ArtiBolSnapshotTests: [test]
+        ArtiBolFeatureTests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      testPlans:
+        - path: ArtiBol.xctestplan
+          defaultPlan: true
+    profile:
+      config: Debug
+      targets:
+        - ArtiBol
+    archive:
+      config: Debug
+      targets:
