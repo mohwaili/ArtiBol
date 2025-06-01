@@ -102,7 +102,7 @@ class AuthenticatedHTTPClientTests {
         }
 
         await #expect(throws: URLError(.userAuthenticationRequired), performing: {
-            try await client.data(with: URLRequest(url: baseURL))
+            try await self.client.data(with: URLRequest(url: self.baseURL))
         })
         
         #expect(requestCount == 2)
@@ -122,7 +122,7 @@ class AuthenticatedHTTPClientTests {
         }
 
         await #expect(throws: URLError(.badServerResponse), performing: {
-            try await client.data(with: URLRequest(url: baseURL))
+            try await self.client.data(with: URLRequest(url: self.baseURL))
         })
         
         #expect(tokenProvider.provideCount == 1)
@@ -141,7 +141,7 @@ class AuthenticatedHTTPClientTests {
         }
 
         await #expect(throws: URLError(.badServerResponse), performing: {
-            try await client.data(with: URLRequest(url: baseURL))
+            try await self.client.data(with: URLRequest(url: self.baseURL))
         })
         
         #expect(tokenProvider.provideCount == 1)
