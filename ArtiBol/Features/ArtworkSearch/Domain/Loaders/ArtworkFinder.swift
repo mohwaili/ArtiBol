@@ -1,5 +1,5 @@
 //
-//  SearchForArtworksUseCase.swift
+//  ArtworkFinder.swift
 //  ArtiBol
 //
 //  Created by Mohammed Al Waili on 30/05/2025.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class SearchForArtworksUseCase {
+final class ArtworkFinder {
     
     private let client: HTTPClient
     private let baseURL: URL

@@ -18,16 +18,16 @@ final class ArtworkImageViewModelImpl: ArtworkImageViewModel {
     
     @Published private(set) var viewState: ViewState<UIImage> = .loading
     
-    private let loadImageUseCase: LoadImageUseCase
+    private let imageLoader: ImageLoader
     
-    init(loadImageUseCase: LoadImageUseCase) {
-        self.loadImageUseCase = loadImageUseCase
+    init(imageLoader: ImageLoader) {
+        self.imageLoader = imageLoader
     }
     
     func loadImage() async {
         viewState = .loading
         do {
-            let data = try await loadImageUseCase.execute()
+            let data = try await imageLoader.execute()
             if let image = UIImage(data: data) {
                 viewState = .loaded(image)
             } else {

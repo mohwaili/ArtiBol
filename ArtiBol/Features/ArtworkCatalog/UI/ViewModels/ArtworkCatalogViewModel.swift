@@ -24,17 +24,17 @@ final class ArtworkCatalogViewModelImpl: ArtworkCatalogViewModel {
     
     @Published private(set) var viewState: ViewState<(artworks: [Artwork], loadingMore: Bool)> = .loading
     
-    private let loadArtworksUseCase: LoadArtworksUseCase
-    private let loadImageUseCaseFactory: (URL?) -> LoadImageUseCase
+    private let artworksLoader: ArtworksLoading
+    private let imageLoaderFactory: (URL?) -> ImageLoader
     private(set) var destinations: Binding<[NavigationDestination]>
     
     init(
-        loadArtworksUseCase: LoadArtworksUseCase,
-        loadImageUseCaseFactory: @escaping (URL?) -> LoadImageUseCase,
+        artworksLoader: ArtworksLoading,
+        imageLoaderFactory: @escaping (URL?) -> ImageLoader,
         destinations: Binding<[NavigationDestination]>
     ) {
-        self.loadArtworksUseCase = loadArtworksUseCase
-        self.loadImageUseCaseFactory = loadImageUseCaseFactory
+        self.artworksLoader = artworksLoader
+        self.imageLoaderFactory = imageLoaderFactory
         self.destinations = destinations
     }
     
@@ -46,7 +46,7 @@ final class ArtworkCatalogViewModelImpl: ArtworkCatalogViewModel {
     func loadData(isRefreshing: Bool) async {
         if !isRefreshing { viewState = .loading }
         do {
-            let artworks = try await loadArtworksUseCase.load()
+            let artworks = try await artworksLoader.load()
             viewState = .loaded((artworks: artworks, loadingMore: false))
         } catch {
             viewState = .error
@@ -59,7 +59,7 @@ final class ArtworkCatalogViewModelImpl: ArtworkCatalogViewModel {
         }
         viewState = .loaded((artworks: artworks, loadingMore: true))
         do {
-            let newArtworks = try await loadArtworksUseCase.loadMore()
+            let newArtworks = try await artworksLoader.loadMore()
             viewState = .loaded((artworks: artworks + newArtworks, loadingMore: false))
         } catch {
             viewState = .loaded((artworks: artworks, loadingMore: false))
@@ -70,7 +70,7 @@ final class ArtworkCatalogViewModelImpl: ArtworkCatalogViewModel {
         ArtworkCardViewModelImpl(
             artwork: artwork,
             artImageviewModel: ArtworkImageViewModelImpl(
-                loadImageUseCase: loadImageUseCaseFactory(artwork.image.url)
+                imageLoader: imageLoaderFactory(artwork.image.url)
             )
         )
     }

@@ -195,7 +195,7 @@ private extension ArtworkImageFeatureTests {
         client: HTTPClient
     ) -> ArtworkImageViewModelImpl {
         ArtworkImageViewModelImpl(
-            loadImageUseCase: LoadImageUseCase(
+            imageLoader: ImageLoader(
                 url: url,
                 client: client,
                 cache: cache

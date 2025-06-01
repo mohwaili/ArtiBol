@@ -29,14 +29,14 @@ final class ArtworkDetailViewModelImp<ImageViewModel: ArtworkImageViewModel>: Ar
         return "-"
     }
     
-    private let fetchArtworkDetailUseCase: FetchArtworkDetailUseCase
+    private let artworkDetailLoader: ArtworkDetailLoading
     private let imageViewModelFactory: (URL?) -> ImageViewModel
     
     init(
-        fetchArtworkDetailUseCase: FetchArtworkDetailUseCase,
+        artworkDetailLoader: ArtworkDetailLoading,
         imageViewModelFactory: @escaping (URL?) -> ImageViewModel
     ) {
-        self.fetchArtworkDetailUseCase = fetchArtworkDetailUseCase
+        self.artworkDetailLoader = artworkDetailLoader
         self.imageViewModelFactory = imageViewModelFactory
     }
     
@@ -49,7 +49,7 @@ final class ArtworkDetailViewModelImp<ImageViewModel: ArtworkImageViewModel>: Ar
     func loadData() async {
         viewState = .loading
         do {
-            let artworkDetail = try await fetchArtworkDetailUseCase.execute()
+            let artworkDetail = try await artworkDetailLoader.load()
             let imageViewModel = imageViewModelFactory(artworkDetail.image.url)
             viewState = .loaded((artworkDetail, imageViewModel))
         } catch {

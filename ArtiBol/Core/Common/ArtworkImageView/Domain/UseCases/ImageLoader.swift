@@ -1,5 +1,5 @@
 //
-//  LoadImageUseCase.swift
+//  ImageLoader.swift
 //  ArtiBol
 //
 //  Created by Mohammed Al Waili on 30/05/2025.
@@ -7,11 +7,11 @@
 
 import UIKit
 
-enum LoadImageUseCaseError: Error {
+enum ImageLoaderError: Error {
     case invalidURL
 }
 
-actor LoadImageUseCase: Sendable {
+actor ImageLoader: Sendable {
     
     private let url: URL?
     private let client: HTTPClient
@@ -27,7 +27,7 @@ actor LoadImageUseCase: Sendable {
     
     func execute() async throws -> Data {
         guard let url else {
-            throw LoadImageUseCaseError.invalidURL
+            throw ImageLoaderError.invalidURL
         }
         let request = URLRequest(url: url)
         if let cachedResponse = cache.cachedResponse(for: request) {

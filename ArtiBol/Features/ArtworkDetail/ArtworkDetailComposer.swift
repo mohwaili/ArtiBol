@@ -18,16 +18,16 @@ struct ArtworkDetailComposer {
         imageCache: URLCache = .imageCache,
         baseURL: URL
     ) -> ArtworkDetailView<ArtworkDetailViewModelImp<ArtworkImageViewModelImpl>> {
-        let remoteArtworkDetailLoader = RemoteArtworkDetailLoader(client: client, baseURL: baseURL)
-        let fetchArtworkDetailUseCase = FetchArtworkDetailUseCase(
-            id: artworkId,
-            loader: remoteArtworkDetailLoader
+        let artworkDetailLoader = ArtworkDetailLoader(
+            artworkId: artworkId,
+            client: client,
+            baseURL: baseURL
         )
         let viewModel = ArtworkDetailViewModelImp<ArtworkImageViewModelImpl>(
-            fetchArtworkDetailUseCase: fetchArtworkDetailUseCase,
+            artworkDetailLoader: artworkDetailLoader,
             imageViewModelFactory: { imageURL in
                 ArtworkImageViewModelImpl(
-                    loadImageUseCase: LoadImageUseCase(
+                    imageLoader: ImageLoader(
                         url: imageURL,
                         client: imageLoadClient,
                         cache: imageCache

@@ -26,17 +26,17 @@ final class ArtworkSearchViewModelImpl<ImageViewModel: ArtworkImageViewModel>: A
     @Published var query: String = ""
     private var lastSearchQuery: String = ""
     
-    private let searchForArtworkUseCaseFactory: (String) -> SearchForArtworksUseCase
-    private let loadImageUseCaseFactory: (URL?) -> LoadImageUseCase
+    private let artworkFinderFactory: (String) -> ArtworkFinder
+    private let imageLoaderFactory: (URL?) -> ImageLoader
     
     init(
         destinations: Binding<[NavigationDestination]>,
-        searchForArtworkUseCaseFactory: @escaping (String) -> SearchForArtworksUseCase,
-        loadImageUseCaseFactory: @escaping (URL?) -> LoadImageUseCase
+        artworkFinderFactory: @escaping (String) -> ArtworkFinder,
+        imageLoaderFactory: @escaping (URL?) -> ImageLoader
     ) {
         self.destinations = destinations
-        self.searchForArtworkUseCaseFactory = searchForArtworkUseCaseFactory
-        self.loadImageUseCaseFactory = loadImageUseCaseFactory
+        self.artworkFinderFactory = artworkFinderFactory
+        self.imageLoaderFactory = imageLoaderFactory
     }
     
     func search() async {
@@ -48,7 +48,7 @@ final class ArtworkSearchViewModelImpl<ImageViewModel: ArtworkImageViewModel>: A
         viewState = .loading
         
         do {
-            let searchResults = try await searchForArtworkUseCaseFactory(query).execute()
+            let searchResults = try await artworkFinderFactory(query).execute()
             viewState = .loaded(searchResults)
             lastSearchQuery = query
         } catch {
@@ -57,7 +57,7 @@ final class ArtworkSearchViewModelImpl<ImageViewModel: ArtworkImageViewModel>: A
     }
     
     func makeArtworkImageViewModel(for searchResult: ArtworkSearchResult) -> some ArtworkImageViewModel {
-        ArtworkImageViewModelImpl(loadImageUseCase: loadImageUseCaseFactory(searchResult.thumbnailUrl))
+        ArtworkImageViewModelImpl(imageLoader: imageLoaderFactory(searchResult.thumbnailUrl))
     }
 }
 

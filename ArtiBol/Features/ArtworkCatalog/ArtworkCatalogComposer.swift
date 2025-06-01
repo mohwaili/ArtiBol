@@ -27,11 +27,10 @@ struct ArtworkCatalogComposer {
             remoteLoader: remoteLoader,
             cachedLoader: cachedLoader
         )
-        let loadArtworksUseCase = LoadArtworksUseCase(loader: artworksLoader)
         let viewModel = ArtworkCatalogViewModelImpl(
-            loadArtworksUseCase: loadArtworksUseCase,
-            loadImageUseCaseFactory: { url in
-                LoadImageUseCase(url: url, client: imageLoadClient, cache: imageCache)
+            artworksLoader: artworksLoader,
+            imageLoaderFactory: { url in
+                ImageLoader(url: url, client: imageLoadClient, cache: imageCache)
             },
             destinations: destinations
         )

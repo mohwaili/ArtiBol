@@ -1,5 +1,5 @@
 //
-//  RemoteArtworkDetailLoader.swift
+//  ArtworkDetailLoader.swift
 //  ArtiBol
 //
 //  Created by Mohammed Al Waili on 30/05/2025.
@@ -7,20 +7,30 @@
 
 import Foundation
 
-final class RemoteArtworkDetailLoader: ArtworkDetailLoading {
+protocol ArtworkDetailLoading: Sendable {
+    func load() async throws -> ArtworkDetail
+}
+
+final class ArtworkDetailLoader: ArtworkDetailLoading {
     
+    private let artworkId: String
     private let client: HTTPClient
     private let baseURL: URL
     
-    init(client: HTTPClient, baseURL: URL) {
+    init(
+        artworkId: String,
+        client: HTTPClient,
+        baseURL: URL
+    ) {
+        self.artworkId = artworkId
         self.client = client
         self.baseURL = baseURL
     }
     
-    func load(id: String) async throws -> ArtworkDetail {
+    func load() async throws -> ArtworkDetail {
         let endPoint = baseURL
             .appendingPathComponent("artworks")
-            .appendingPathComponent(id)
+            .appendingPathComponent(artworkId)
         let request = URLRequest(url: endPoint)
         let (data, _) = try await client.data(with: request)
         return try JSONDecoder().decode(ArtworkDetail.self, from: data)

@@ -22,11 +22,11 @@ struct ArtworkSearchComposer {
     ) -> ArtworkSearchView<ArtworkSearchViewModelImpl<ArtworkImageViewModelImpl>> {
         let viewModel = ArtworkSearchViewModelImpl<ArtworkImageViewModelImpl>(
             destinations: destinations,
-            searchForArtworkUseCaseFactory: { query in
-                SearchForArtworksUseCase(client: client, baseURL: baseURL, query: query)
+            artworkFinderFactory: { query in
+                ArtworkFinder(client: client, baseURL: baseURL, query: query)
             },
-            loadImageUseCaseFactory: { url in
-                LoadImageUseCase(url: url, client: imageClient, cache: imageCache)
+            imageLoaderFactory: { url in
+                ImageLoader(url: url, client: imageClient, cache: imageCache)
             }
         )
         return ArtworkSearchView(viewModel: viewModel)
