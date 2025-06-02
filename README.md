@@ -89,7 +89,7 @@ In Xcode:
 3. All three test targets (Unit, Snapshot, Feature) will run in sequence.
 
 ## **📠 System Information**
-- Built and tested in Xcode 16.4 (behavior may vary on other versions
+- Built and tested in Xcode 16.4 (behavior may vary on other versions)
 - Running on macOS 15.4.1
 
 ## **❗ Known Issues**
@@ -97,7 +97,7 @@ In Xcode:
 - **Detail Endpoint Inconsistencies**
     - Not all search “self” links return valid resources, due to Artsy indexing delays and content restrictions. Some artwork details may fail to load.
 - **Snapshot Tests on Different Devices**
-    - If you switch simulators (e.g., from iPhone SE to iPhone 14), snapshot tests may fail. To fix, update or re-record the reference images.
+    - If you switch simulators (e.g., from iPhone 16e to iPhone 16 Pro), snapshot tests may fail. To fix, update or re-record the reference images.
 
 ## **🔗 Useful Links**
 
