@@ -16,7 +16,7 @@ protocol Navigator {
 
 extension Navigator {
     
-    func navigate(to destination: NavigationDestination){
+    func navigate(to destination: NavigationDestination) {
         destinations.wrappedValue.append(destination)
     }
 }

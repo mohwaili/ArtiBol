@@ -25,8 +25,14 @@ struct ArtworkSearchComposer {
             artworkFinderFactory: { query in
                 ArtworkFinder(client: client, baseURL: baseURL, query: query)
             },
-            imageLoaderFactory: { url in
-                ImageLoader(url: url, client: imageClient, cache: imageCache)
+            imageViewModelFactory: { url in
+                ArtworkImageViewModelImpl(
+                    imageLoader: ImageLoader(
+                        url: url,
+                        client: imageClient,
+                        cache: imageCache
+                    )
+                )
             }
         )
         return ArtworkSearchView(viewModel: viewModel)

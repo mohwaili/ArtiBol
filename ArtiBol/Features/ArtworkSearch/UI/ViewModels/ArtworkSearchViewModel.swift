@@ -27,16 +27,16 @@ final class ArtworkSearchViewModelImpl<ImageViewModel: ArtworkImageViewModel>: A
     private var lastSearchQuery: String = ""
     
     private let artworkFinderFactory: (String) -> ArtworkFinder
-    private let imageLoaderFactory: (URL?) -> ImageLoader
+    private let imageViewModelFactory: (URL?) -> ImageViewModel
     
     init(
         destinations: Binding<[NavigationDestination]>,
         artworkFinderFactory: @escaping (String) -> ArtworkFinder,
-        imageLoaderFactory: @escaping (URL?) -> ImageLoader
+        imageViewModelFactory: @escaping (URL?) -> ImageViewModel
     ) {
         self.destinations = destinations
         self.artworkFinderFactory = artworkFinderFactory
-        self.imageLoaderFactory = imageLoaderFactory
+        self.imageViewModelFactory = imageViewModelFactory
     }
     
     func search() async {
@@ -56,8 +56,8 @@ final class ArtworkSearchViewModelImpl<ImageViewModel: ArtworkImageViewModel>: A
         }
     }
     
-    func makeArtworkImageViewModel(for searchResult: ArtworkSearchResult) -> some ArtworkImageViewModel {
-        ArtworkImageViewModelImpl(imageLoader: imageLoaderFactory(searchResult.thumbnailUrl))
+    func makeArtworkImageViewModel(for searchResult: ArtworkSearchResult) -> ImageViewModel {
+        imageViewModelFactory(searchResult.thumbnailUrl)
     }
 }
 

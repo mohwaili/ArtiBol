@@ -20,21 +20,21 @@ protocol ArtworkCatalogViewModel: ObservableObject {
     func makeCardViewModel(for artwork: Artwork) -> CardViewModel
 }
 
-final class ArtworkCatalogViewModelImpl: ArtworkCatalogViewModel {
+final class ArtworkCatalogViewModelImpl<ImageViewModel: ArtworkImageViewModel>: ArtworkCatalogViewModel {
     
     @Published private(set) var viewState: ViewState<(artworks: [Artwork], loadingMore: Bool)> = .loading
     
     private let artworksLoader: ArtworksLoading
-    private let imageLoaderFactory: (URL?) -> ImageLoader
+    private let imageViewModelFactory: (URL?) -> ImageViewModel
     private(set) var destinations: Binding<[NavigationDestination]>
     
     init(
         artworksLoader: ArtworksLoading,
-        imageLoaderFactory: @escaping (URL?) -> ImageLoader,
+        imageViewModelFactory: @escaping (URL?) -> ImageViewModel,
         destinations: Binding<[NavigationDestination]>
     ) {
         self.artworksLoader = artworksLoader
-        self.imageLoaderFactory = imageLoaderFactory
+        self.imageViewModelFactory = imageViewModelFactory
         self.destinations = destinations
     }
     
@@ -69,9 +69,7 @@ final class ArtworkCatalogViewModelImpl: ArtworkCatalogViewModel {
     func makeCardViewModel(for artwork: Artwork) -> some ArtworkCardViewModel {
         ArtworkCardViewModelImpl(
             artwork: artwork,
-            artImageviewModel: ArtworkImageViewModelImpl(
-                imageLoader: imageLoaderFactory(artwork.image.url)
-            )
+            artImageviewModel: imageViewModelFactory(artwork.image.url)
         )
     }
 }

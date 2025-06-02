@@ -226,7 +226,7 @@ private extension ArtworkCatalogFeatureTests {
         destinations: Binding<[NavigationDestination]> = .constant([]),
         client: HTTPClient,
         baseURL: URL
-    ) -> ArtworkCatalogViewModelImpl {
+    ) -> ArtworkCatalogViewModelImpl<ArtworkImageViewModelImpl> {
         ArtworkCatalogComposer.compose(
             destinations: destinations,
             artworksClient: client,
