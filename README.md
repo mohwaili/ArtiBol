@@ -16,6 +16,14 @@ An example iOS app for Bol.com that showcases art using the [Artsy API](https://
 
 > Navigating from search results to an artwork’s detail endpoint may occasionally fail. Although each search result includes a `"self"` link, indexing delays and content restrictions mean that not every link will return a resource. Only a subset of artworks is exposed through the API, whereas search covers all content published on Artsy.
 
+## Screenshots
+
+<p align="center">
+  <img src="Screenshots/screenshot_1.png" alt="Catalog" width="30%">
+  <img src="Screenshots/screenshot_2.png" alt="Search" width="30%">
+  <img src="Screenshots/screenshot_3.png" alt="Detail" width="30%">
+</p>
+
 ---
 ## 🚀 Running Locally
 
