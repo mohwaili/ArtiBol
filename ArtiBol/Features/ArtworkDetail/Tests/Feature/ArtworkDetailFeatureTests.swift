@@ -65,7 +65,7 @@ class ArtworkDetailFeatureTests {
         
         await sut.onAppear()
         
-        guard case .loaded(let (artworkDetail, _)) = sut.viewState else {
+        guard case .loaded(let artworkDetail) = sut.viewState else {
             Issue.record("Expected view state to be .error")
             return
         }
@@ -82,13 +82,13 @@ private extension ArtworkDetailFeatureTests {
         client: HTTPClient,
         imageCache: URLCache = URLCache(),
         baseURL: URL
-    ) -> ArtworkDetailViewModelImp<ArtworkImageViewModelImpl> {
+    ) -> ArtworkDetailViewModelImp {
         ArtworkDetailComposer.compose(
             artworkId: artworkId,
             client: client,
             imageLoadClient: client,
             imageCache: imageCache,
             baseURL: baseURL
-        ).extractViewModel(ArtworkDetailViewModelImp<ArtworkImageViewModelImpl>.self)
+        ).extractViewModel(ArtworkDetailViewModelImp.self)
     }
 }

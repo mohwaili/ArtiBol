@@ -7,12 +7,14 @@
 
 import SwiftUI
 
-struct ArtworkDetailView<ViewModel: ArtworkDetailViewModel>: View {
+struct ArtworkDetailView<ViewModel: ArtworkDetailViewModel, ArtworkImageView: View>: View {
     
     @ObservedObject private var viewModel: ViewModel
+    private let artworkImageView: (ArtworkDetail) -> ArtworkImageView
     
-    init(viewModel: ViewModel) {
+    init(viewModel: ViewModel, artworkImageView: @escaping (ArtworkDetail) -> ArtworkImageView) {
         self.viewModel = viewModel
+        self.artworkImageView = artworkImageView
     }
     
     var body: some View {
@@ -20,8 +22,8 @@ struct ArtworkDetailView<ViewModel: ArtworkDetailViewModel>: View {
             switch viewModel.viewState {
             case .loading:
                 LoadingView()
-            case .loaded(let (artworkDetail, imageViewModel)):
-                makeLoadedState(artworkDetail: artworkDetail, imageViewModel: imageViewModel)
+            case .loaded(let artworkDetail):
+                makeLoadedState(artworkDetail: artworkDetail)
             case .error:
                 ErrorRetryView(onRetry: {
                     await viewModel.loadData()
@@ -40,10 +42,10 @@ struct ArtworkDetailView<ViewModel: ArtworkDetailViewModel>: View {
 
 private extension ArtworkDetailView {
     
-    func makeLoadedState<ImageViewModel: ArtworkImageViewModel>(artworkDetail: ArtworkDetail, imageViewModel: ImageViewModel) -> some View {
+    func makeLoadedState(artworkDetail: ArtworkDetail) -> some View {
         ScrollView {
             VStack(alignment: .leading) {
-                ArtworkImageView(viewModel: imageViewModel)
+                artworkImageView(artworkDetail)
                     .aspectRatio(artworkDetail.dimensions.width / artworkDetail.dimensions.height, contentMode: .fit)
                 
                 makeInfoView(artworkDetail: artworkDetail)
@@ -94,12 +96,12 @@ private class PreviewArtImageViewModel: ArtworkImageViewModel {
     func loadImage() async { }
 }
 
-private class PreviewViewModel<ImageViewModel: PreviewArtImageViewModel>: ArtworkDetailViewModel {
+private class PreviewViewModel: ArtworkDetailViewModel {
     
-    @Published private(set) var viewState: ViewState<(ArtworkDetail, ImageViewModel)>
+    @Published private(set) var viewState: ViewState<ArtworkDetail>
     let navigationBarTitle: String = "-"
     
-    init(viewState: ViewState<(ArtworkDetail, ImageViewModel)>) {
+    init(viewState: ViewState<ArtworkDetail>) {
         self.viewState = viewState
     }
     
@@ -120,27 +122,35 @@ private let artworkDetail = ArtworkDetail(
 #Preview("Loaded") {
     ArtworkDetailView(
         viewModel: PreviewViewModel(
-            viewState: .loaded(
-                (
-                    artworkDetail,
-                    PreviewArtImageViewModel(
-                        viewState: .loaded(UIImage(resource: .artImage1))
+            viewState: .loaded(artworkDetail)
+        ),
+        artworkImageView: { _ in
+            ArtworkImageView(
+                viewModel: PreviewArtImageViewModel(
+                    viewState: .loaded(
+                        UIImage(resource: .artImage1)
                     )
                 )
             )
-        )
+        }
     )
 }
 
 #Preview("Loading") {
     ArtworkDetailView(
-        viewModel: PreviewViewModel(viewState: .loading)
+        viewModel: PreviewViewModel(viewState: .loading),
+        artworkImageView: { _ in
+            EmptyView()
+        }
     )
 }
 
 #Preview("Error") {
     ArtworkDetailView(
-        viewModel: PreviewViewModel(viewState: .error)
+        viewModel: PreviewViewModel(viewState: .error),
+        artworkImageView: { _ in
+            EmptyView()
+        }
     )
 }
 

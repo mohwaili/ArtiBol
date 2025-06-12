@@ -21,7 +21,10 @@ final class ArtworkDetailSnapshotTests: SnapshotTestCase {
         let view = ArtworkDetailView(
             viewModel: SnapshotViewModel(
                 viewState: .error
-            )
+            ),
+            artworkImageView: { _ in
+                EmptyView()
+            }
         )
         
         let sut = UIHostingController(rootView: view)
@@ -33,7 +36,10 @@ final class ArtworkDetailSnapshotTests: SnapshotTestCase {
         let view = ArtworkDetailView(
             viewModel: SnapshotViewModel(
                 viewState: .loading
-            )
+            ),
+            artworkImageView: { _ in
+                EmptyView()
+            }
         )
         
         let sut = UIHostingController(rootView: view)
@@ -43,15 +49,19 @@ final class ArtworkDetailSnapshotTests: SnapshotTestCase {
     
     func test_loadedState() {
         let view = ArtworkDetailView(
-            viewModel: SnapshotViewModel(viewState: .loaded((
+            viewModel: SnapshotViewModel(viewState: .loaded(
                 makeArtworkDetail(
                     id: "1",
                     title: "The cross",
                     date: "200 AD - 400 AD",
                     dimensions: ArtworkDimensions(height: 473, width: 640, text: "473 x 640")
-                    ),
-                SnapshotViewModel.ImageViewModel(viewState: .loaded(.artImage2))
-            )))
+                    )
+            )),
+            artworkImageView: { _ in
+                ArtworkImageView(
+                    viewModel: SnapshotImageViewModel(viewState: .loaded(.artImage2))
+                )
+            }
         )
         
         let sut = UIHostingController(rootView: view)
@@ -83,12 +93,9 @@ private extension ArtworkDetailSnapshotTests {
 }
 
 private class SnapshotViewModel: ArtworkDetailViewModel {
+    @Published private(set) var viewState: ViewState<ArtworkDetail>
     
-    typealias ImageViewModel = SnapshotImageViewModel
-    
-    @Published private(set) var viewState: ViewState<(ArtworkDetail, ImageViewModel)>
-    
-    init(viewState: ViewState<(ArtworkDetail, ImageViewModel)>) {
+    init(viewState: ViewState<ArtworkDetail>) {
         self.viewState = viewState
     }
     

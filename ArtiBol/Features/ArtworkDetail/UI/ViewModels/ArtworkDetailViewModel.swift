@@ -9,35 +9,28 @@ import SwiftUI
 
 @MainActor
 protocol ArtworkDetailViewModel: ObservableObject, Sendable {
-    associatedtype ImageViewModel: ArtworkImageViewModel
-    
-    var viewState: ViewState<(ArtworkDetail, ImageViewModel)> { get }
+    var viewState: ViewState<ArtworkDetail> { get }
     var navigationBarTitle: String { get }
     
     func onAppear() async
     func loadData() async
 }
 
-final class ArtworkDetailViewModelImp<ImageViewModel: ArtworkImageViewModel>: ArtworkDetailViewModel {
+final class ArtworkDetailViewModelImp: ArtworkDetailViewModel {
     
-    @Published private(set) var viewState: ViewState<(ArtworkDetail, ImageViewModel)> = .loading
+    @Published private(set) var viewState: ViewState<ArtworkDetail> = .loading
     
     var navigationBarTitle: String {
-        if case .loaded(let (artworkDetail, _)) = viewState {
+        if case .loaded(let artworkDetail) = viewState {
             return artworkDetail.title
         }
         return "-"
     }
     
     private let artworkDetailLoader: ArtworkDetailLoading
-    private let imageViewModelFactory: (URL?) -> ImageViewModel
     
-    init(
-        artworkDetailLoader: ArtworkDetailLoading,
-        imageViewModelFactory: @escaping (URL?) -> ImageViewModel
-    ) {
+    init(artworkDetailLoader: ArtworkDetailLoading) {
         self.artworkDetailLoader = artworkDetailLoader
-        self.imageViewModelFactory = imageViewModelFactory
     }
     
     func onAppear() async {
@@ -50,8 +43,7 @@ final class ArtworkDetailViewModelImp<ImageViewModel: ArtworkImageViewModel>: Ar
         viewState = .loading
         do {
             let artworkDetail = try await artworkDetailLoader.load()
-            let imageViewModel = imageViewModelFactory(artworkDetail.image.url)
-            viewState = .loaded((artworkDetail, imageViewModel))
+            viewState = .loaded(artworkDetail)
         } catch {
             viewState = .error
         }
