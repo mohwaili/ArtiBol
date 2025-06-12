@@ -20,7 +20,7 @@ struct ArtworkCatalogComposer {
         imageLoadClient: HTTPClient = URLSession.shared,
         imageCache: URLCache = .imageCache,
         baseURL: URL = AppConfig.URLS.baseAPIURL
-    ) -> ArtworkCatalogView<ArtworkCatalogViewModelImpl<ArtworkImageViewModelImpl>> {
+    ) -> some View {
         let remoteLoader = RemoteArtworksLoader(client: artworksClient, baseURL: baseURL)
         let cachedLoader = CachedArtworksLoader()
         let artworksLoader = CompositeArtworksLoader(

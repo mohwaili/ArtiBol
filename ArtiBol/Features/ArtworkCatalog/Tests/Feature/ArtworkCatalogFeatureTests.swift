@@ -233,6 +233,6 @@ private extension ArtworkCatalogFeatureTests {
             imageLoadClient: client,
             imageCache: URLCache(),
             baseURL: baseURL
-        ).viewModel
+        ).extractViewModel(ArtworkCatalogViewModelImpl<ArtworkImageViewModelImpl>.self)
     }
 }

@@ -17,7 +17,7 @@ struct ArtworkDetailComposer {
         imageLoadClient: HTTPClient = URLSession.shared,
         imageCache: URLCache = .imageCache,
         baseURL: URL
-    ) -> ArtworkDetailView<ArtworkDetailViewModelImp<ArtworkImageViewModelImpl>> {
+    ) -> some View {
         let artworkDetailLoader = ArtworkDetailLoader(
             artworkId: artworkId,
             client: client,

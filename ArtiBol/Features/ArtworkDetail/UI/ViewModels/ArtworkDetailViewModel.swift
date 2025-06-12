@@ -8,7 +8,7 @@
 import SwiftUI
 
 @MainActor
-protocol ArtworkDetailViewModel: ObservableObject {
+protocol ArtworkDetailViewModel: ObservableObject, Sendable {
     associatedtype ImageViewModel: ArtworkImageViewModel
     
     var viewState: ViewState<(ArtworkDetail, ImageViewModel)> { get }

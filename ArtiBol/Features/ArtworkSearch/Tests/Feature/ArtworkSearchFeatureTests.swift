@@ -54,6 +54,28 @@ class ArtworkSearchFeatureTests {
         }
         #expect(searchResults == expectedSearchResults)
     }
+
+    @Test
+    func deleteQuery_resetsViewStateToNil() async {
+        let stubbedData = APIResponse.ArtworkSearch.successWithData
+        URLProtocolStub.stubRequests(stubs: [
+            URL(string: "https://www.artibol.com/api/search?q=Mona%20Lisa&type=artwork&size=10")!: .data(data: stubbedData, statusCode: 200)
+        ])
+        let sut = makeSUT(client: client, baseURL: baseURL)
+        sut.query = "Mona Lisa"
+        
+        await sut.search()
+        
+        guard case .loaded = sut.viewState else {
+            Issue.record("Expected view state to be .loaded")
+            return
+        }
+        
+        sut.query = ""
+        await sut.search()
+
+        #expect(sut.viewState == nil)
+    }
     
     @Test
     func search_replacesCurrentSearchResultsWithNewResults() async {
@@ -169,6 +191,6 @@ private extension ArtworkSearchFeatureTests {
             imageClient: client,
             imageCache: imageCache,
             baseURL: baseURL
-        ).viewModel
+        ).extractViewModel(ArtworkSearchViewModelImpl<ArtworkImageViewModelImpl>.self)
     }
 }

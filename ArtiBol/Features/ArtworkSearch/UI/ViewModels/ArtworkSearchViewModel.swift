@@ -41,6 +41,7 @@ final class ArtworkSearchViewModelImpl<ImageViewModel: ArtworkImageViewModel>: A
     
     func search() async {
         guard !query.isEmpty else {
+            viewState = nil
             return
         }
         

@@ -89,6 +89,6 @@ private extension ArtworkDetailFeatureTests {
             imageLoadClient: client,
             imageCache: imageCache,
             baseURL: baseURL
-        ).viewModel
+        ).extractViewModel(ArtworkDetailViewModelImp<ArtworkImageViewModelImpl>.self)
     }
 }

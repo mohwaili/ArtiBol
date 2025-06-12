@@ -8,7 +8,7 @@
 import SwiftUI
 
 @MainActor
-protocol ArtworkImageViewModel: ObservableObject {
+protocol ArtworkImageViewModel: ObservableObject, Sendable {
     var viewState: ViewState<UIImage> { get }
     
     func loadImage() async

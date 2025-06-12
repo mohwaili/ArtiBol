@@ -19,7 +19,7 @@ struct ArtworkSearchComposer {
         imageClient: HTTPClient = URLSession.shared,
         imageCache: URLCache = .imageCache,
         baseURL: URL = AppConfig.URLS.baseAPIURL
-    ) -> ArtworkSearchView<ArtworkSearchViewModelImpl<ArtworkImageViewModelImpl>> {
+    ) -> some View {
         let viewModel = ArtworkSearchViewModelImpl<ArtworkImageViewModelImpl>(
             destinations: destinations,
             artworkFinderFactory: { query in

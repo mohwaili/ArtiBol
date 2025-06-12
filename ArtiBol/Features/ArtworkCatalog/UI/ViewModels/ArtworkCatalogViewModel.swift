@@ -8,7 +8,7 @@
 import SwiftUI
 
 @MainActor
-protocol ArtworkCatalogViewModel: ObservableObject {
+protocol ArtworkCatalogViewModel: ObservableObject, Sendable {
     associatedtype CardViewModel: ArtworkCardViewModel
     
     var viewState: ViewState<(artworks: [Artwork], loadingMore: Bool)> { get }
