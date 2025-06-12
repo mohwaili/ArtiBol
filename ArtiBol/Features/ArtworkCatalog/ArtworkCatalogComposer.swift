@@ -29,17 +29,25 @@ struct ArtworkCatalogComposer {
         )
         let viewModel = ArtworkCatalogViewModelImpl(
             artworksLoader: artworksLoader,
-            imageViewModelFactory: { url in
-                ArtworkImageViewModelImpl(
-                    imageLoader: ImageLoader(
-                        url: url,
-                        client: imageLoadClient,
-                        cache: imageCache
-                    )
-                )
-            },
             destinations: destinations
         )
-        return ArtworkCatalogView(viewModel: viewModel)
+        return ArtworkCatalogView(
+            viewModel: viewModel,
+            cardView: { artwork in
+                ArtworkCardView(
+                    viewModel: ArtworkCardViewModelImpl(artwork: artwork),
+                    artworkImageView: {
+                        ArtworkImageView(
+                            viewModel: ArtworkImageViewModelImpl(
+                                imageLoader: ImageLoader(
+                                    url: artwork.image.url,
+                                    client: imageLoadClient,
+                                    cache: imageCache
+                                )
+                            )
+                        )
+                    }
+                )
+        })
     }
 }

@@ -7,12 +7,17 @@
 
 import SwiftUI
 
-struct ArtworkCatalogView<ViewModel: ArtworkCatalogViewModel & ArtworkDetailNavigator>: View {
+struct ArtworkCatalogView<
+    ViewModel: ArtworkCatalogViewModel & ArtworkDetailNavigator,
+    CardView: View
+>: View {
     
     @ObservedObject private var viewModel: ViewModel
+    private let cardView: (Artwork) -> CardView
     
-    init(viewModel: ViewModel) {
+    init(viewModel: ViewModel, cardView: @escaping (Artwork) -> CardView) {
         self.viewModel = viewModel
+        self.cardView = cardView
     }
     
     var body: some View {
@@ -64,7 +69,7 @@ private extension ArtworkCatalogView {
         ScrollView {
             LazyVStack(spacing: 8) {
                 ForEach(Array(artworks.enumerated()), id: \.element.id) { index, artwork in
-                    ArtworkCardView(viewModel: viewModel.makeCardViewModel(for: artwork))
+                    cardView(artwork)
                     .onAppear {
                         if index >= artworks.count - 2 {
                             Task {
@@ -90,7 +95,7 @@ private extension ArtworkCatalogView {
 
 // MARK: - Previews -
 
-private class PreviewArtImageViewModel: ArtworkImageViewModel {
+private class PreviewArtworkImageViewModel: ArtworkImageViewModel {
  
     @Published private(set) var viewState: ViewState<UIImage>
     
@@ -104,11 +109,9 @@ private class PreviewArtImageViewModel: ArtworkImageViewModel {
 private class PreviewCardViewModel: ArtworkCardViewModel {
     
     let artwork: Artwork
-    let artImageViewModel: PreviewArtImageViewModel
     
-    init(artwork: Artwork, viewState: ViewState<UIImage>) {
+    init(artwork: Artwork) {
         self.artwork = artwork
-        self.artImageViewModel = PreviewArtImageViewModel(viewState: viewState)
     }
     
     nonisolated var id: String {
@@ -129,10 +132,6 @@ private class PreviewViewModel: ArtworkCatalogViewModel, ArtworkDetailNavigator 
     func onAppear() async { }
     func loadData(isRefreshing: Bool) async { }
     func loadMore() async { }
-    func makeCardViewModel(for artwork: Artwork) -> some ArtworkCardViewModel {
-        let image = UIImage(resource: artwork.id == "1" ? .artImage1 : .artImage2)
-        return PreviewCardViewModel(artwork: artwork, viewState: .loaded(image))
-    }
 }
 
 private let previewArtWorks: [Artwork] = [
@@ -163,7 +162,17 @@ private let previewArtWorks: [Artwork] = [
                 artworks: previewArtWorks,
                 loadingMore: false
             ))
-        )
+        ),
+        cardView: { artwork in
+            ArtworkCardView(
+                viewModel: ArtworkCardViewModelImpl(artwork: artwork),
+                artworkImageView: {
+                    ArtworkImageView(
+                        viewModel: PreviewArtworkImageViewModel(viewState: .loaded(.artImage1))
+                    )
+                }
+            )
+        }
     )
 }
 
@@ -174,18 +183,34 @@ private let previewArtWorks: [Artwork] = [
                 artworks: previewArtWorks,
                 loadingMore: true
             ))
-        )
+        ),
+        cardView: { artwork in
+            ArtworkCardView(
+                viewModel: ArtworkCardViewModelImpl(artwork: artwork),
+                artworkImageView: {
+                    ArtworkImageView(
+                        viewModel: PreviewArtworkImageViewModel(viewState: .loaded(.artImage1))
+                    )
+                }
+            )
+        }
     )
 }
 
 #Preview("Loading") {
     ArtworkCatalogView(
-        viewModel: PreviewViewModel(viewState: .loading)
+        viewModel: PreviewViewModel(viewState: .loading),
+        cardView: { _ in
+            EmptyView()
+        }
     )
 }
 
 #Preview("Error") {
     ArtworkCatalogView(
-        viewModel: PreviewViewModel(viewState: .error)
+        viewModel: PreviewViewModel(viewState: .error),
+        cardView: { _ in
+            EmptyView()
+        }
     )
 }

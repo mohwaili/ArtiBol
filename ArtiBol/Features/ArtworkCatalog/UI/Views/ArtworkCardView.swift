@@ -7,17 +7,19 @@
 
 import SwiftUI
 
-struct ArtworkCardView<ViewModel: ArtworkCardViewModel>: View {
+struct ArtworkCardView<ViewModel: ArtworkCardViewModel, ArtworkImageView: View>: View {
     
     @StateObject var viewModel: ViewModel
+    private let artworkImageView: () -> ArtworkImageView
     
-    init(viewModel: ViewModel) {
+    init(viewModel: ViewModel, artworkImageView: @escaping () -> ArtworkImageView) {
         self._viewModel = StateObject(wrappedValue: viewModel)
+        self.artworkImageView = artworkImageView
     }
     
     var body: some View {
         ZStack(alignment: .bottom) {
-            ArtworkImageView(viewModel: viewModel.artImageViewModel)
+            artworkImageView()
                 .aspectRatio(viewModel.artwork.dimensions.width / viewModel.artwork.dimensions.height, contentMode: .fit)
             
             infoView
@@ -54,7 +56,7 @@ private extension ArtworkCardView {
 
 // MARK: - Preview -
 
-private class PreviewArtImageViewModel: ArtworkImageViewModel {
+private class PreviewArtworkImageViewModel: ArtworkImageViewModel {
     
     @Published private(set) var viewState: ViewState<UIImage>
     
@@ -67,21 +69,15 @@ private class PreviewArtImageViewModel: ArtworkImageViewModel {
 
 private class PreviewViewModel: ArtworkCardViewModel {
     
-    let artwork: Artwork
-    let artImageViewModel: PreviewArtImageViewModel
-    
-    init(viewState: ViewState<UIImage>) {
-        self.artwork = Artwork(
-            id: "1",
-            title: "Virgin of the Rocks",
-            category: "Unknown",
-            medium: "Wood",
-            date: "17th century",
-            dimensions: ArtworkDimensions(height: 640, width: 392, text: "392 x 640"),
-            image: ArtworkImage(url: nil)
-        )
-        self.artImageViewModel = PreviewArtImageViewModel(viewState: viewState)
-    }
+    let artwork: Artwork = Artwork(
+        id: "1",
+        title: "Virgin of the Rocks",
+        category: "Unknown",
+        medium: "Wood",
+        date: "17th century",
+        dimensions: ArtworkDimensions(height: 640, width: 392, text: "392 x 640"),
+        image: ArtworkImage(url: nil)
+    )
     
     nonisolated var id: String {
         UUID().uuidString
@@ -89,13 +85,28 @@ private class PreviewViewModel: ArtworkCardViewModel {
 }
 
 #Preview("Loaded") {
-    ArtworkCardView(viewModel: PreviewViewModel(viewState: .loaded(UIImage(resource: .artImage1))))
+    ArtworkCardView(
+        viewModel: PreviewViewModel()) {
+            ArtworkImageView(
+                viewModel: PreviewArtworkImageViewModel(viewState: .loaded(.artImage1))
+            )
+        }
 }
 
 #Preview("Loading") {
-    ArtworkCardView(viewModel: PreviewViewModel(viewState: .loading))
+    ArtworkCardView(
+        viewModel: PreviewViewModel()) {
+            ArtworkImageView(
+                viewModel: PreviewArtworkImageViewModel(viewState: .loading)
+            )
+        }
 }
 
 #Preview("Error") {
-    ArtworkCardView(viewModel: PreviewViewModel(viewState: .error))
+    ArtworkCardView(
+        viewModel: PreviewViewModel()) {
+            ArtworkImageView(
+                viewModel: PreviewArtworkImageViewModel(viewState: .error)
+            )
+        }
 }

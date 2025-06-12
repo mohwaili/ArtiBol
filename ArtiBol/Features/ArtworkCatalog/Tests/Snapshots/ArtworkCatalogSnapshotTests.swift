@@ -19,10 +19,12 @@ final class ArtworkCatalogSnapshotTests: SnapshotTestCase {
     
     func test_emptyState() {
         let view = ArtworkCatalogView(
-            viewModel: SnapshotViewModel.init(
-                viewState: .loaded((artworks: [], loadingMore: false)),
-                viewStateForArtwork: { _ in .loading }
-            )
+            viewModel: SnapshotViewModel(
+                viewState: .loaded((artworks: [], loadingMore: false))
+            ),
+            cardView: { _ in
+                EmptyView()
+            }
         )
         
         let sut = UIHostingController(rootView: view)
@@ -32,10 +34,12 @@ final class ArtworkCatalogSnapshotTests: SnapshotTestCase {
     
     func test_errorState() {
         let view = ArtworkCatalogView(
-            viewModel: SnapshotViewModel.init(
-                viewState: .error,
-                viewStateForArtwork: { _ in .loading }
-            )
+            viewModel: SnapshotViewModel(
+                viewState: .error
+            ),
+            cardView: { _ in
+                EmptyView()
+            }
         )
         
         let sut = UIHostingController(rootView: view)
@@ -45,10 +49,12 @@ final class ArtworkCatalogSnapshotTests: SnapshotTestCase {
     
     func test_loadingState() {
         let view = ArtworkCatalogView(
-            viewModel: SnapshotViewModel.init(
-                viewState: .loading,
-                viewStateForArtwork: { _ in .loading }
-            )
+            viewModel: SnapshotViewModel(
+                viewState: .loading
+            ),
+            cardView: { _ in
+                EmptyView()
+            }
         )
         
         let sut = UIHostingController(rootView: view)
@@ -72,16 +78,19 @@ final class ArtworkCatalogSnapshotTests: SnapshotTestCase {
             )
         ]
         let view = ArtworkCatalogView(
-            viewModel: SnapshotViewModel.init(
-                viewState: .loaded((artworks: artworks, loadingMore: false)),
-                viewStateForArtwork: { artwork in
-                    if artwork.id == "1" {
-                        return .loaded(.artImage2)
-                    } else {
-                        return .loading
+            viewModel: SnapshotViewModel(
+                viewState: .loaded((artworks: artworks, loadingMore: false))
+            ),
+            cardView: { artwork in
+                ArtworkCardView(
+                    viewModel: ArtworkCardViewModelImpl(artwork: artwork),
+                    artworkImageView: {
+                        ArtworkImageView(
+                            viewModel: SnapshotImageViewModel(viewState: artwork.id == "1" ? .loaded(.artImage2) : .loading)
+                        )
                     }
-                }
-            )
+                )
+            }
         )
         
         let sut = UIHostingController(rootView: view)
@@ -112,48 +121,16 @@ private extension ArtworkCatalogSnapshotTests {
     }
 }
 
-private class SnapshotCardViewModel: ArtworkCardViewModel {
-    
-    typealias ImageViewModel = SnapshotImageViewModel
-    
-    let id: String = UUID().uuidString
-    
-    let artwork: Artwork
-    let artImageViewModel: ImageViewModel
-    
-    init(artwork: Artwork, artImageViewModel: ImageViewModel) {
-        self.artwork = artwork
-        self.artImageViewModel = artImageViewModel
-    }
-    
-}
-
 private class SnapshotViewModel: ArtworkCatalogViewModel, ArtworkDetailNavigator {
-    
-    typealias CardViewModel = SnapshotCardViewModel
     
     @Published var destinations: Binding<[NavigationDestination]> = .constant([])
     @Published private(set) var viewState: ViewState<(artworks: [Artwork], loadingMore: Bool)>
-    let viewStateForArtwork: (Artwork) -> ViewState<UIImage>
     
-    init(
-        viewState: ViewState<(artworks: [Artwork], loadingMore: Bool)>,
-        viewStateForArtwork: @escaping (Artwork) -> ViewState<UIImage>
-    ) {
+    init(viewState: ViewState<(artworks: [Artwork], loadingMore: Bool)>) {
         self.viewState = viewState
-        self.viewStateForArtwork = viewStateForArtwork
     }
     
     func onAppear() async { }
     func loadData(isRefreshing: Bool) async { }
     func loadMore() async { }
-    
-    func makeCardViewModel(for artwork: Artwork) -> CardViewModel {
-        CardViewModel(
-            artwork: artwork,
-            artImageViewModel: SnapshotCardViewModel.ImageViewModel(
-                viewState: viewStateForArtwork(artwork)
-            )
-        )
-    }
 }

@@ -180,26 +180,6 @@ class ArtworkCatalogFeatureTests {
     }
     
     @Test
-    func makeCardViewModel_createsViewModelWithCorrectData() {
-        let imageURL = URL(string: "https://cdn.artsy.com/mona-lisa.png")!
-        let artwork: Artwork = .init(
-            id: "123",
-            title: "Mona Lisa",
-            category: "Painting",
-            medium: "Oil",
-            date: "c. 1503–1506",
-            dimensions: ArtworkDimensions(height: 200, width: 120, text: "200 x 120"),
-            image: ArtworkImage(url: imageURL)
-        )
-        let sut = makeSUT(client: URLSession(configuration: .ephemeral), baseURL: baseURL)
-        
-        let cardViewModel = sut.makeCardViewModel(for: artwork)
-        
-        #expect(cardViewModel.id == artwork.id)
-        #expect(cardViewModel.artwork == artwork)
-    }
-    
-    @Test
     func navigateToDetail() {
         var destinations: [NavigationDestination] = []
         let destinationsBinding = Binding<[NavigationDestination]>(
@@ -226,13 +206,13 @@ private extension ArtworkCatalogFeatureTests {
         destinations: Binding<[NavigationDestination]> = .constant([]),
         client: HTTPClient,
         baseURL: URL
-    ) -> ArtworkCatalogViewModelImpl<ArtworkImageViewModelImpl> {
+    ) -> ArtworkCatalogViewModelImpl {
         ArtworkCatalogComposer.compose(
             destinations: destinations,
             artworksClient: client,
             imageLoadClient: client,
             imageCache: URLCache(),
             baseURL: baseURL
-        ).extractViewModel(ArtworkCatalogViewModelImpl<ArtworkImageViewModelImpl>.self)
+        ).extractViewModel(ArtworkCatalogViewModelImpl.self)
     }
 }

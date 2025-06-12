@@ -9,32 +9,28 @@ import SwiftUI
 
 @MainActor
 protocol ArtworkCatalogViewModel: ObservableObject, Sendable {
-    associatedtype CardViewModel: ArtworkCardViewModel
-    
     var viewState: ViewState<(artworks: [Artwork], loadingMore: Bool)> { get }
     
     func onAppear() async
     func loadData(isRefreshing: Bool) async
     func loadMore() async
-    
-    func makeCardViewModel(for artwork: Artwork) -> CardViewModel
 }
 
-final class ArtworkCatalogViewModelImpl<ImageViewModel: ArtworkImageViewModel>: ArtworkCatalogViewModel {
+final class ArtworkCatalogViewModelImpl: ArtworkCatalogViewModel {
     
-    @Published private(set) var viewState: ViewState<(artworks: [Artwork], loadingMore: Bool)> = .loading
+    @Published private(set) var viewState: ViewState<(
+        artworks: [Artwork],
+        loadingMore: Bool
+    )> = .loading
     
     private let artworksLoader: ArtworksLoading
-    private let imageViewModelFactory: (URL?) -> ImageViewModel
     private(set) var destinations: Binding<[NavigationDestination]>
     
     init(
         artworksLoader: ArtworksLoading,
-        imageViewModelFactory: @escaping (URL?) -> ImageViewModel,
         destinations: Binding<[NavigationDestination]>
     ) {
         self.artworksLoader = artworksLoader
-        self.imageViewModelFactory = imageViewModelFactory
         self.destinations = destinations
     }
     
@@ -64,13 +60,6 @@ final class ArtworkCatalogViewModelImpl<ImageViewModel: ArtworkImageViewModel>: 
         } catch {
             viewState = .loaded((artworks: artworks, loadingMore: false))
         }
-    }
-    
-    func makeCardViewModel(for artwork: Artwork) -> some ArtworkCardViewModel {
-        ArtworkCardViewModelImpl(
-            artwork: artwork,
-            artImageviewModel: imageViewModelFactory(artwork.image.url)
-        )
     }
 }
 
