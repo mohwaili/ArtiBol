@@ -10,9 +10,9 @@ import SwiftUI
 struct ArtworkDetailView<ViewModel: ArtworkDetailViewModel, ArtworkImageView: View>: View {
     
     @ObservedObject private var viewModel: ViewModel
-    private let artworkImageView: (ArtworkDetail) -> ArtworkImageView
+    private let artworkImageView: (Artwork) -> ArtworkImageView
     
-    init(viewModel: ViewModel, artworkImageView: @escaping (ArtworkDetail) -> ArtworkImageView) {
+    init(viewModel: ViewModel, artworkImageView: @escaping (Artwork) -> ArtworkImageView) {
         self.viewModel = viewModel
         self.artworkImageView = artworkImageView
     }
@@ -22,8 +22,8 @@ struct ArtworkDetailView<ViewModel: ArtworkDetailViewModel, ArtworkImageView: Vi
             switch viewModel.viewState {
             case .loading:
                 LoadingView()
-            case .loaded(let artworkDetail):
-                makeLoadedState(artworkDetail: artworkDetail)
+            case .loaded(let artwork):
+                makeLoadedState(artwork: artwork)
             case .error:
                 ErrorRetryView(onRetry: {
                     await viewModel.loadData()
@@ -42,29 +42,29 @@ struct ArtworkDetailView<ViewModel: ArtworkDetailViewModel, ArtworkImageView: Vi
 
 private extension ArtworkDetailView {
     
-    func makeLoadedState(artworkDetail: ArtworkDetail) -> some View {
+    func makeLoadedState(artwork: Artwork) -> some View {
         ScrollView {
             VStack(alignment: .leading) {
-                artworkImageView(artworkDetail)
-                    .aspectRatio(artworkDetail.dimensions.width / artworkDetail.dimensions.height, contentMode: .fit)
+                artworkImageView(artwork)
+                    .aspectRatio(artwork.dimensions.width / artwork.dimensions.height, contentMode: .fit)
                 
-                makeInfoView(artworkDetail: artworkDetail)
+                makeInfoView(artwork: artwork)
             }
             .padding(.bottom, 16)
         }
     }
     
-    func makeInfoView(artworkDetail: ArtworkDetail) -> some View {
+    func makeInfoView(artwork: Artwork) -> some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text(artworkDetail.title)
+            Text(artwork.title)
                 .font(.title)
                 .fontDesign(.monospaced)
             
             VStack(alignment: .leading, spacing: 4) {
-                makeInfoRow(key: "Date", value: artworkDetail.date)
-                makeInfoRow(key: "Dimensions", value: artworkDetail.dimensions.text)
-                makeInfoRow(key: "Category", value: artworkDetail.category)
-                makeInfoRow(key: "Medium", value: artworkDetail.medium)
+                makeInfoRow(key: "Date", value: artwork.date)
+                makeInfoRow(key: "Dimensions", value: artwork.dimensions.text)
+                makeInfoRow(key: "Category", value: artwork.category)
+                makeInfoRow(key: "Medium", value: artwork.medium)
             }
             .padding(.top, 16)
         }
@@ -98,10 +98,10 @@ private class PreviewArtImageViewModel: ArtworkImageViewModel {
 
 private class PreviewViewModel: ArtworkDetailViewModel {
     
-    @Published private(set) var viewState: ViewState<ArtworkDetail>
+    @Published private(set) var viewState: ViewState<Artwork>
     let navigationBarTitle: String = "-"
     
-    init(viewState: ViewState<ArtworkDetail>) {
+    init(viewState: ViewState<Artwork>) {
         self.viewState = viewState
     }
     
@@ -109,7 +109,7 @@ private class PreviewViewModel: ArtworkDetailViewModel {
     func loadData() async { }
 }
 
-private let artworkDetail = ArtworkDetail(
+private let artwork = Artwork(
     id: "1",
     title: "Virgin of the Rocks",
     category: "Painting",
@@ -122,7 +122,7 @@ private let artworkDetail = ArtworkDetail(
 #Preview("Loaded") {
     ArtworkDetailView(
         viewModel: PreviewViewModel(
-            viewState: .loaded(artworkDetail)
+            viewState: .loaded(artwork)
         ),
         artworkImageView: { _ in
             ArtworkImageView(

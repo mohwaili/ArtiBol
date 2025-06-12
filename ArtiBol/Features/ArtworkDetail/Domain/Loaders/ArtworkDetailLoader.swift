@@ -8,7 +8,7 @@
 import Foundation
 
 protocol ArtworkDetailLoading: Sendable {
-    func load() async throws -> ArtworkDetail
+    func load() async throws -> Artwork
 }
 
 final class ArtworkDetailLoader: ArtworkDetailLoading {
@@ -27,12 +27,12 @@ final class ArtworkDetailLoader: ArtworkDetailLoading {
         self.baseURL = baseURL
     }
     
-    func load() async throws -> ArtworkDetail {
+    func load() async throws -> Artwork {
         let endPoint = baseURL
             .appendingPathComponent("artworks")
             .appendingPathComponent(artworkId)
         let request = URLRequest(url: endPoint)
         let (data, _) = try await client.data(with: request)
-        return try JSONDecoder().decode(ArtworkDetail.self, from: data)
+        return try JSONDecoder().decode(Artwork.self, from: data)
     }
 }

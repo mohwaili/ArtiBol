@@ -1,13 +1,14 @@
 //
-//  ArtworkDetail.swift
+//  Artwork.swift
 //  ArtiBol
 //
-//  Created by Mohammed Al Waili on 30/05/2025.
+//  Created by Mohammed Al Waili on 29/05/2025.
 //
 
 import Foundation
 
-struct ArtworkDetail {
+struct Artwork {
+    
     let id: String
     let title: String
     let category: String
@@ -17,7 +18,7 @@ struct ArtworkDetail {
     let image: ArtworkImage
 }
 
-extension ArtworkDetail: Decodable {
+extension Artwork: Decodable {
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -30,4 +31,4 @@ extension ArtworkDetail: Decodable {
     }
 }
 
-extension ArtworkDetail: Equatable { }
+extension Artwork: Equatable { }

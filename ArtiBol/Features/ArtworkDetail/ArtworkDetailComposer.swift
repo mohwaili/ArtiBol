@@ -24,13 +24,13 @@ struct ArtworkDetailComposer {
             baseURL: baseURL
         )
         let viewModel = ArtworkDetailViewModelImp(
-            artworkDetailLoader: artworkDetailLoader 
+            artworkDetailLoader: artworkDetailLoader
         )
-        return ArtworkDetailView(viewModel: viewModel) { artworkDetail in
+        return ArtworkDetailView(viewModel: viewModel) { artwork in
             ArtworkImageView(
                 viewModel: ArtworkImageViewModelImpl(
                     imageLoader: ImageLoader(
-                        url: artworkDetail.image.url,
+                        url: artwork.image.url,
                         client: imageLoadClient,
                         cache: imageCache
                     )

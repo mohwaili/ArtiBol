@@ -50,7 +50,7 @@ final class ArtworkDetailSnapshotTests: SnapshotTestCase {
     func test_loadedState() {
         let view = ArtworkDetailView(
             viewModel: SnapshotViewModel(viewState: .loaded(
-                makeArtworkDetail(
+                makeArtwork(
                     id: "1",
                     title: "The cross",
                     date: "200 AD - 400 AD",
@@ -74,13 +74,13 @@ final class ArtworkDetailSnapshotTests: SnapshotTestCase {
 
 private extension ArtworkDetailSnapshotTests {
     
-    func makeArtworkDetail(
+    func makeArtwork(
         id: String,
         title: String,
         date: String,
         dimensions: ArtworkDimensions
-    ) -> ArtworkDetail {
-        ArtworkDetail(
+    ) -> Artwork {
+        Artwork(
             id: id,
             title: title,
             category: "any",
@@ -93,9 +93,9 @@ private extension ArtworkDetailSnapshotTests {
 }
 
 private class SnapshotViewModel: ArtworkDetailViewModel {
-    @Published private(set) var viewState: ViewState<ArtworkDetail>
+    @Published private(set) var viewState: ViewState<Artwork>
     
-    init(viewState: ViewState<ArtworkDetail>) {
+    init(viewState: ViewState<Artwork>) {
         self.viewState = viewState
     }
     

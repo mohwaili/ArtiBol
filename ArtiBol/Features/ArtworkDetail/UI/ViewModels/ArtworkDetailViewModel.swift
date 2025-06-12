@@ -9,7 +9,7 @@ import SwiftUI
 
 @MainActor
 protocol ArtworkDetailViewModel: ObservableObject, Sendable {
-    var viewState: ViewState<ArtworkDetail> { get }
+    var viewState: ViewState<Artwork> { get }
     var navigationBarTitle: String { get }
     
     func onAppear() async
@@ -18,11 +18,11 @@ protocol ArtworkDetailViewModel: ObservableObject, Sendable {
 
 final class ArtworkDetailViewModelImp: ArtworkDetailViewModel {
     
-    @Published private(set) var viewState: ViewState<ArtworkDetail> = .loading
+    @Published private(set) var viewState: ViewState<Artwork> = .loading
     
     var navigationBarTitle: String {
-        if case .loaded(let artworkDetail) = viewState {
-            return artworkDetail.title
+        if case .loaded(let artwork) = viewState {
+            return artwork.title
         }
         return "-"
     }

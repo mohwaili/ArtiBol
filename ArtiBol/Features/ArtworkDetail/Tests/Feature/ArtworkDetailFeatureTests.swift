@@ -69,7 +69,7 @@ class ArtworkDetailFeatureTests {
             Issue.record("Expected view state to be .error")
             return
         }
-        let expectedArtworkDetail = try JSONDecoder().decode(ArtworkDetail.self, from: stubbedData)
+        let expectedArtworkDetail = try JSONDecoder().decode(Artwork.self, from: stubbedData)
         #expect(artworkDetail == expectedArtworkDetail)
         #expect(sut.navigationBarTitle == artworkDetail.title)
     }
