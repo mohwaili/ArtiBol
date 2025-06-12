@@ -157,24 +157,6 @@ class ArtworkSearchFeatureTests {
         
         #expect(requestCount == 1)
     }
-    
-    @Test
-    func makeArtworkImageViewModel_createViewModelWithCorrectData() {
-        let searchResult = ArtworkSearchResult(
-            title: "Van Gogh",
-            description: "Self portrait",
-            thumbnailUrl: baseURL.appendingPathComponent("vincent.png"),
-            artworkId: "1"
-        )
-        let sut = makeSUT(client: client, baseURL: baseURL)
-        
-        let imageViewModel = sut.makeArtworkImageViewModel(for: searchResult)
-        
-        guard case .loading = imageViewModel.viewState else {
-            Issue.record("Expected view state to be .loading")
-            return
-        }
-    }
 }
 
 private extension ArtworkSearchFeatureTests {
@@ -184,13 +166,13 @@ private extension ArtworkSearchFeatureTests {
         client: HTTPClient,
         imageCache: URLCache = URLCache(),
         baseURL: URL
-    ) -> ArtworkSearchViewModelImpl<ArtworkImageViewModelImpl> {
+    ) -> ArtworkSearchViewModelImpl {
         ArtworkSearchComposer.compose(
             destinations: destinations,
             client: client,
             imageClient: client,
             imageCache: imageCache,
             baseURL: baseURL
-        ).extractViewModel(ArtworkSearchViewModelImpl<ArtworkImageViewModelImpl>.self)
+        ).extractViewModel(ArtworkSearchViewModelImpl.self)
     }
 }

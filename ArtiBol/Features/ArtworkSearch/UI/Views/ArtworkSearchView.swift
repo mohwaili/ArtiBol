@@ -7,12 +7,17 @@
 
 import SwiftUI
 
-struct ArtworkSearchView<ViewModel: ArtworkSearchViewModel & ArtworkDetailNavigator>: View {
+struct ArtworkSearchView<
+    ViewModel: ArtworkSearchViewModel & ArtworkDetailNavigator,
+    ArtworkImageView: View
+>: View {
     
     @ObservedObject private var viewModel: ViewModel
+    private let artworkImageView: (ArtworkSearchResult) -> ArtworkImageView
     
-    init(viewModel: ViewModel) {
+    init(viewModel: ViewModel, artworkImageView: @escaping (ArtworkSearchResult) -> ArtworkImageView) {
         self.viewModel = viewModel
+        self.artworkImageView = artworkImageView
     }
     
     var body: some View {
@@ -94,7 +99,7 @@ private extension ArtworkSearchView {
     
     func makeSearchResultRowView(searchResult: ArtworkSearchResult) -> some View {
         HStack(alignment: .top) {
-            ArtworkImageView(viewModel: viewModel.makeArtworkImageViewModel(for: searchResult))
+            artworkImageView(searchResult)
                 .frame(width: 80, height: 80)
                 .aspectRatio(contentMode: .fit)
             VStack(alignment: .leading) {
@@ -143,30 +148,54 @@ private class PreviewViewModel: ArtworkSearchViewModel, ArtworkDetailNavigator {
     }
     
     func search() async { }
-    func makeArtworkImageViewModel(for searchResult: ArtworkSearchResult) -> some ArtworkImageViewModel {
-        PreviewImageViewModel(viewState: .loaded(.artImage1))
-    }
 }
 
 #Preview("Initial") {
-    ArtworkSearchView(viewModel: PreviewViewModel(viewState: nil))
+    ArtworkSearchView(
+        viewModel: PreviewViewModel(viewState: nil),
+        artworkImageView: { _ in
+            EmptyView()
+        }
+    )
 }
 
 #Preview("No Search Results") {
-    ArtworkSearchView(viewModel: PreviewViewModel(viewState: .loaded([])))
+    ArtworkSearchView(
+        viewModel: PreviewViewModel(viewState: .loaded([])),
+        artworkImageView: { _ in
+            EmptyView()
+        }
+    )
 }
 
 #Preview("Search Results") {
-    ArtworkSearchView(viewModel: PreviewViewModel(viewState: .loaded([
-        ArtworkSearchResult(title: "Vincent van Gogh Portrait 1", description: "A self portrait by Vincent van Gogh", thumbnailUrl: nil, artworkId: nil),
-        ArtworkSearchResult(title: "van Gogh Portrait 2", description: "Another portrait by Vincent van Gogh", thumbnailUrl: nil, artworkId: nil)
-    ])))
+    ArtworkSearchView(
+        viewModel: PreviewViewModel(
+            viewState: .loaded([
+                ArtworkSearchResult(title: "Vincent van Gogh Portrait 1", description: "A self portrait by Vincent van Gogh", thumbnailUrl: nil, artworkId: nil),
+                ArtworkSearchResult(title: "van Gogh Portrait 2", description: "Another portrait by Vincent van Gogh", thumbnailUrl: nil, artworkId: nil)
+            ])
+        ),
+        artworkImageView: { _ in
+            ArtworkImageView(viewModel: PreviewImageViewModel(viewState: .loaded(.artImage1)))
+        }
+    )
 }
 
 #Preview("Loading") {
-    ArtworkSearchView(viewModel: PreviewViewModel(viewState: .loading))
+    ArtworkSearchView(
+        viewModel: PreviewViewModel(viewState: .loading),
+        artworkImageView: { _ in
+            EmptyView()
+        }
+    )
 }
 
 #Preview("Error") {
-    ArtworkSearchView(viewModel: PreviewViewModel(viewState: .error))
+    ArtworkSearchView(
+        viewModel: PreviewViewModel(viewState: .error),
+        artworkImageView: { _ in
+            EmptyView()
+        }
+    )
 }

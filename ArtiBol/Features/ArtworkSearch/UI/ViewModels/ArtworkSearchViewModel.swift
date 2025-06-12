@@ -9,16 +9,13 @@ import SwiftUI
 
 @MainActor
 protocol ArtworkSearchViewModel: ObservableObject {
-    associatedtype ImageViewModel: ArtworkImageViewModel
-    
     var viewState: ViewState<[ArtworkSearchResult]>? { get }
     var query: String { get set }
     
     func search() async
-    func makeArtworkImageViewModel(for searchResult: ArtworkSearchResult) -> ImageViewModel
 }
 
-final class ArtworkSearchViewModelImpl<ImageViewModel: ArtworkImageViewModel>: ArtworkSearchViewModel {
+final class ArtworkSearchViewModelImpl: ArtworkSearchViewModel {
     
     private(set) var destinations: Binding<[NavigationDestination]>
     
@@ -27,16 +24,13 @@ final class ArtworkSearchViewModelImpl<ImageViewModel: ArtworkImageViewModel>: A
     private var lastSearchQuery: String = ""
     
     private let artworkFinderFactory: (String) -> ArtworkFinder
-    private let imageViewModelFactory: (URL?) -> ImageViewModel
     
     init(
         destinations: Binding<[NavigationDestination]>,
         artworkFinderFactory: @escaping (String) -> ArtworkFinder,
-        imageViewModelFactory: @escaping (URL?) -> ImageViewModel
     ) {
         self.destinations = destinations
         self.artworkFinderFactory = artworkFinderFactory
-        self.imageViewModelFactory = imageViewModelFactory
     }
     
     func search() async {
@@ -55,10 +49,6 @@ final class ArtworkSearchViewModelImpl<ImageViewModel: ArtworkImageViewModel>: A
         } catch {
             viewState = .error
         }
-    }
-    
-    func makeArtworkImageViewModel(for searchResult: ArtworkSearchResult) -> ImageViewModel {
-        imageViewModelFactory(searchResult.thumbnailUrl)
     }
 }
 

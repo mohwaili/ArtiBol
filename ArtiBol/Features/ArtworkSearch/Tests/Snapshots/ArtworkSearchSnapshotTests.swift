@@ -20,9 +20,11 @@ final class ArtworkSearchSnapshotTests: SnapshotTestCase {
     func test_initialState() {
         let view = ArtworkSearchView(
             viewModel: SnapshotViewModel(
-                viewState: nil,
-                viewStateForSearchResult: { _ in .loading }
-            )
+                viewState: nil
+            ),
+            artworkImageView: { _ in
+                EmptyView()
+            }
         )
         
         let sut = UIHostingController(rootView: view)
@@ -33,9 +35,11 @@ final class ArtworkSearchSnapshotTests: SnapshotTestCase {
     func test_errorState() {
         let view = ArtworkSearchView(
             viewModel: SnapshotViewModel(
-                viewState: .error,
-                viewStateForSearchResult: { _ in .loading }
-            )
+                viewState: .error
+            ),
+            artworkImageView: { _ in
+                EmptyView()
+            }
         )
         
         let sut = UIHostingController(rootView: view)
@@ -48,8 +52,10 @@ final class ArtworkSearchSnapshotTests: SnapshotTestCase {
             viewModel: SnapshotViewModel(
                 viewState: .loading,
                 query: "The cross",
-                viewStateForSearchResult: { _ in .loading }
-            )
+            ),
+            artworkImageView: { _ in
+                EmptyView()
+            }
         )
         
         let sut = UIHostingController(rootView: view)
@@ -74,15 +80,15 @@ final class ArtworkSearchSnapshotTests: SnapshotTestCase {
                         ),
                     ]
                 ),
-                query: "The cross",
-                viewStateForSearchResult: { searchResult in
-                    if searchResult.artworkId == "1" {
-                        return .loaded(.artImage2)
-                    } else {
-                        return .loading
-                    }
-                }
-            )
+                query: "The cross"
+            ),
+            artworkImageView: { artworkSearchResult in
+                ArtworkImageView(
+                    viewModel: SnapshotImageViewModel(
+                        viewState: artworkSearchResult.artworkId == "1" ? .loaded(.artImage2) : .loading
+                    )
+                )
+            }
         )
         
         let sut = UIHostingController(rootView: view)
@@ -111,27 +117,17 @@ private extension ArtworkSearchSnapshotTests {
 
 private class SnapshotViewModel: ArtworkSearchViewModel & ArtworkDetailNavigator {
     
-    typealias ImageViewModel = SnapshotImageViewModel
-    
     @Published var destinations: Binding<[NavigationDestination]> = .constant([])
     @Published private(set) var viewState: ViewState<[ArtworkSearchResult]>?
     @Published var query: String = ""
     
-    let viewStateForSearchResult: (ArtworkSearchResult) -> ViewState<UIImage>
-    
     init(viewState: ViewState<[ArtworkSearchResult]>?,
-         query: String = "",
-         viewStateForSearchResult: @escaping (ArtworkSearchResult) -> ViewState<UIImage>) {
+         query: String = "") {
         self.viewState = viewState
         self.query = query
-        self.viewStateForSearchResult = viewStateForSearchResult
     }
     
     func search() async { }
-    
-    func makeArtworkImageViewModel(for searchResult: ArtworkSearchResult) -> ImageViewModel {
-        ImageViewModel(viewState: viewStateForSearchResult(searchResult))
-    }
     
     func navigateToArtworkDetail(id: String) { }
 }

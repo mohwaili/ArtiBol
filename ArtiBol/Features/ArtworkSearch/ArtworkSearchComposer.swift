@@ -20,21 +20,25 @@ struct ArtworkSearchComposer {
         imageCache: URLCache = .imageCache,
         baseURL: URL = AppConfig.URLS.baseAPIURL
     ) -> some View {
-        let viewModel = ArtworkSearchViewModelImpl<ArtworkImageViewModelImpl>(
+        let viewModel = ArtworkSearchViewModelImpl(
             destinations: destinations,
             artworkFinderFactory: { query in
                 ArtworkFinder(client: client, baseURL: baseURL, query: query)
-            },
-            imageViewModelFactory: { url in
-                ArtworkImageViewModelImpl(
-                    imageLoader: ImageLoader(
-                        url: url,
-                        client: imageClient,
-                        cache: imageCache
+            }
+        )
+        return ArtworkSearchView(
+            viewModel: viewModel,
+            artworkImageView: { artworkSearchResult in
+                ArtworkImageView(
+                    viewModel: ArtworkImageViewModelImpl(
+                        imageLoader: ImageLoader(
+                            url: artworkSearchResult.thumbnailUrl,
+                            client: imageClient,
+                            cache: imageCache
+                        )
                     )
                 )
             }
         )
-        return ArtworkSearchView(viewModel: viewModel)
     }
 }
